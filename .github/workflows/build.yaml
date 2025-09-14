@@ -1,0 +1,37 @@
+name: React App CI
+
+on:
+  push:
+    branches: [ "main" ]   # Run on every push to main branch
+  pull_request:
+    branches: [ "main" ]   # Also run for PRs targeting main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # GitHub provides this virtual machine
+
+    steps:
+      # 1. Checkout the repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Setup Node.js environment
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"   # Use Node 18 LTS
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # 4. Run build
+      - name: Build project
+        run: npm run build
+
+      # 5. Upload build artifacts (optional but good practice)
+      - name: Upload production build
+        uses: actions/upload-artifact@v4
+        with:
+          name: react-build
+          path: build
